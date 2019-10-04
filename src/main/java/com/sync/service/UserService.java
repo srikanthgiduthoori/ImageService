@@ -3,6 +3,10 @@ package com.sync.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.sync.mapper.UserMapper;
+import com.sync.vo.UserVO;
+
+import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -38,6 +42,8 @@ public class UserService implements UserDetailsService {
 	@Autowired
 	private ImageRepository imageRepository;
 
+	private final UserMapper usermapper = Mappers.getMapper(UserMapper.class);
+	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		User user = userRepository.findByUsername(username);
@@ -48,9 +54,9 @@ public class UserService implements UserDetailsService {
 				new ArrayList<>());
 	}
 
-	public User save(User user) {
+	public UserVO save(User user) {
 		user.setPassword(bcryptEncoder.encode(user.getPassword()));
-		return userRepository.save(user);
+		return usermapper.toUserVO(userRepository.save((user)));
 	}
 
 	private void authenticate(String username, String password) throws Exception {
@@ -82,7 +88,7 @@ public class UserService implements UserDetailsService {
 		User user = userRepository.findByUsername(name);
 		UserProfile userprofile = new UserProfile();
 		userprofile.setImages(images);
-		userprofile.setUser(user);
+		userprofile.setUser(UserMapper.INSTANCE.toUserVO(user));
 		return userprofile;
 	}
 

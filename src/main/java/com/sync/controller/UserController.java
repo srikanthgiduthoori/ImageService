@@ -1,5 +1,6 @@
 package com.sync.controller;
 
+import com.sync.vo.UserVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;

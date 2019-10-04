@@ -11,7 +11,7 @@ import lombok.Setter;
 @Getter @Setter
 public class UserProfile {
 	
-	private User user;
+	private UserVO user;
 	private List<Image> images;
 
 }
